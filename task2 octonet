@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List with Deadlines</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: url('https://wallpapercave.com/wp/wp7881177.jpg'); /* Background image URL */
+        background-size: cover; /* Cover the entire viewport */
+        background-position: center; /* Center the background image */
+    }
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: rgba(255, 255, 255, 0.8); /* White container background with transparency */
+        padding: 20px;
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Shadow effect */
+    }
+    h1, p {
+        text-align: center;
+        color: #333; /* Dark text color */
+    }
+    input[type="text"], input[type="datetime-local"], button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box; /* Include padding in width */
+    }
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.8); /* Invert color of date picker icon */
+    }
+    button {
+        background-color: #4caf50; /* Green button background */
+        color: #fff; /* White button text */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Smooth transition */
+    }
+    button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        color: #333; /* Dark text color */
+    }
+    li:last-child {
+        border-bottom: none;
+    }
+    .delete {
+        float: right;
+        cursor: pointer;
+        color: #FF6347; /* Red color for delete icon */
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>To-Do List with Deadlines</h1>
+    <input type="text" id="taskInput" placeholder="Enter task...">
+    <input type="datetime-local" id="deadlineInput" placeholder="Select deadline...">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+    function addTask() {
+        var taskInput = document.getElementById("taskInput");
+        var deadlineInput = document.getElementById("deadlineInput");
+        var taskList = document.getElementById("taskList");
+        
+        if (taskInput.value === "") {
+            alert("Please enter a task!");
+            return;
+        }
+
+        if (deadlineInput.value === "") {
+            alert("Please select a deadline!");
+            return;
+        }
+        
+        var li = document.createElement("li");
+        li.textContent = taskInput.value + " (Deadline: " + formatDeadline(deadlineInput.value) + ")";
+        
+        var deleteButton = document.createElement("span");
+        deleteButton.className = "delete";
+        deleteButton.textContent = "❌";
+        deleteButton.onclick = function() {
+            taskList.removeChild(li);
+        };
+        
+        li.appendChild(deleteButton);
+        taskList.appendChild(li);
+        
+        taskInput.value = "";
+        deadlineInput.value = "";
+    }
+
+    function formatDeadline(deadline) {
+        var deadlineDate = new Date(deadline);
+        var day = deadlineDate.toLocaleDateString("en-US", { weekday: "long" });
+        var date = deadlineDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+        var time = deadlineDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true });
+        return day + ", " + date + " - " + time;
+    }
+</script>
+
+</body>
+</html>
